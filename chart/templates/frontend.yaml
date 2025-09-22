@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-frontend
+spec:
+  selector:
+    matchLabels:
+      app: express-frontend
+  template:
+    metadata:
+      labels:
+        app: express-frontend
+    spec:
+      containers:
+      - name: express-frontend
+        image: docker.io/roohinaks/assign-frontend
+        ports:
+        - containerPort: 3000
+        env:
+        - name: BACKEND_URL
+          value: http://flask-backend:80/api
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-frontend
+spec:
+  selector:
+    app: express-frontend
+  ports:
+  - port: 80
+    targetPort: 3000
